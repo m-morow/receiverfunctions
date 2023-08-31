@@ -1,13 +1,12 @@
 from mpl_toolkits.basemap import Basemap
 import matplotlib.pyplot as plt
+import matplotlib.lines as mlines
 import numpy as np
 import os
 import csv
 from obspy import read, Stream
 from datetime import date
 import matplotlib as mpl
-
-## FOR DISTRIBUTION
 
 def bad_events(badfilepath):
     """
@@ -53,11 +52,17 @@ def _fig0(title, lat_ref, lon_ref, lats, lons, M, path, grid=True, save=True):
     for x1, y1, c in zip(lons, lats, M):
         xpts, ypts = m(x1, y1)
         if float(c) >= 7.5:
-            m.scatter(xpts, ypts, color='red', alpha=0.8, edgecolors='black', s=45, zorder=15)
+            m.scatter(xpts, ypts, color='red', alpha=0.8, edgecolors='black', s=45, zorder=10)
         elif 6 <= float(c) < 7.5:
-            m.scatter(xpts, ypts, color='yellow', alpha=0.8, edgecolors='black', s=30, zorder=10)
+            m.scatter(xpts, ypts, color='orange', alpha=0.8, edgecolors='black', s=30, zorder=5)
         else:
-            m.scatter(xpts, ypts, color='green', alpha=0.8, edgecolors='black', s=15, zorder=5)
+            m.scatter(xpts, ypts, color='green', alpha=0.8, edgecolors='black', s=15, zorder=0)
+
+    # plot legend
+    M6 = mlines.Line2D([], [], color='green', marker='o', markersize=5, linestyle="None", label='M5.0-5.9')
+    M7 = mlines.Line2D([], [], color='orange', marker='o', markersize=5, linestyle="None", label='M6.0-7.4')
+    M8 = mlines.Line2D([], [], color='red', marker='o', markersize=5, linestyle="None", label='M7.5+')
+    plt.legend(handles=[M8, M7, M6], loc=1)
 
     # draw the title.
     plt.title('{}'.format(title))
@@ -74,7 +79,7 @@ def check_data(filepath):
     :param filepath: filepath of coordinates
     :return: data exists, true. Does not exist, false
     """
-    data = np.loadtxt(filepath)
+    data = np.loadtxt(filepath, delimiter=',')
     if len(data[0]) > 1:
         return True
     else:
@@ -121,7 +126,7 @@ def get_event_data(enter_dir, list2sort):
 
 
 # 0 if you don't have a file
-filepath = 0
+filepath = "/Users/madeleinetan/Downloads/query.csv"
 badfilepath = 0
 
 # column number (0 - N columns)
@@ -154,7 +159,7 @@ else:
         title = input("Enter title of map: ")
         enter_dir = input("Enter the path of working dir: ")
         print("Making map...")
-        data = np.loadtxt(filepath)
+        data = np.loadtxt(filepath, delimiter=',')
         _fig0(title, ref_lat, ref_lon, data[:, lat_loc], data[:, lon_loc], data[:, mag_loc], enter_dir, grid=False, save=True)
     else:
         print("Could not make map, data is only 1 column")
