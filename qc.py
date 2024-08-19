@@ -10,7 +10,6 @@ import numpy as np
 import matplotlib as mpl
 mpl.use('macosx')
 
-## FOR DISTRIBUTION
 
 # --------------------------
 # RF QC code
@@ -76,7 +75,7 @@ filenames = []
 totalRFs = 0
 st = Stream()
 
-for f in glob.iglob("/Users/madeleinetan/Research/arrays_downloaded_112422_master/all/TA.{}.*.sac".format(station)):
+for f in glob.iglob("TA.{}.*.sac".format(station)):
     st += read(f)
     filenames = np.append(filenames, f)
 
@@ -110,15 +109,15 @@ ax0 = fig.add_subplot(grid[0:5, 0:10])
 tellme('Plotting receiver functions...')
 
 # Check if {station}_Bad.txt exist, if not create it
-if not os.path.exists('/Users/madeleinetan/Research/arrays_downloaded_112422_master/{}_BAD.txt'.format(station)):
-    with open('/Users/madeleinetan/Research/arrays_downloaded_112422_master/{}_BAD.txt'.format(station), 'w'): pass
+if not os.path.exists('{}_BAD.txt'.format(station)):
+    with open('{}_BAD.txt'.format(station), 'w'): pass
 
 # Plot traces; if offset == baz in bad event file, trace is plotted with lower opacity
 offset = 10
 badfilenames = []
 for j, tr in enumerate(st1):
-    with open('/Users/madeleinetan/Research/arrays_downloaded_112422_master/{}_BAD.txt'.format(station), 'r+') as file:
-        dat = np.loadtxt('/Users/madeleinetan/Research/arrays_downloaded_112422_master/{}_BAD.txt'.format(station))
+    with open('{}_BAD.txt'.format(station), 'r+') as file:
+        dat = np.loadtxt('{}_BAD.txt'.format(station))
         if offset in dat:
             print("     1 bad trace marked:{}".format(tr.stats.sac.baz))
             badfilenames = np.append(badfilenames, SortedFiles[j])
@@ -168,18 +167,18 @@ while not done:
         index2save = SortedFiles[offset2index.T]
 
         # Save X,Y information of bad traces
-        a_file = open('/Users/madeleinetan/Research/arrays_downloaded_112422_master/{}_BAD.txt'.format(station), "a")
+        a_file = open('{}_BAD.txt'.format(station), "a")
         data = np.array([XBads]).T
         np.savetxt(a_file, data.astype(int), fmt='%i')
         a_file.close()
 
         # Save filename of bad traces at a station
-        with open('/Users/madeleinetan/Research/arrays_downloaded_112422_master/{}_BAD_files.txt'.format(station), 'a') as f:
+        with open('{}_BAD_files.txt'.format(station), 'a') as f:
             for line in index2save.T:
                 f.write(f"{line}\n")
 
         # Save filename of bad traces for all stations
-        with open('/Users/madeleinetan/Research/arrays_downloaded_112422_master/ALL_BAD_files.txt', 'a') as f:
+        with open('ALL_BAD_files.txt', 'a') as f:
             for line in index2save.T:
                 f.write(f"{line}\n")
 
