@@ -6,7 +6,6 @@ import os
 import glob
 import matplotlib as mpl
 
-## FOR DISTRIBUTION
 
 def _fig0(data, offset, time, scale_factor=0.5, all=380):
     """
@@ -50,9 +49,9 @@ def _fig1(data, time, scale_factor=1):
     ax1.fill_betweenx(time, data * scale_factor, where=(data * scale_factor) < 0, color='b', alpha=1)
 
 
-rootdir = '/Users/madeleinetan/Research/arrays_downloaded_112422_master/'
+rootdir = ''
 
-text_file = open('/Users/madeleinetan/Research/arrays_downloaded_112422_master/ALL_BAD_files.txt', "r")
+text_file = open('ALL_BAD_files.txt', "r")
 ListToSort = text_file.read().splitlines()
 ListToSort = np.array(ListToSort)
 text_file.close()
