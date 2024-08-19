@@ -126,7 +126,7 @@ def get_event_data(enter_dir, list2sort):
 
 
 # 0 if you don't have a file
-filepath = "/Users/madeleinetan/Downloads/query.csv"
+filepath = ""
 badfilepath = 0
 
 # column number (0 - N columns)
